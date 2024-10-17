@@ -1,4 +1,4 @@
 1.Дано число. Проверьте, отрицательное оно или нет. Выведите об этом информацию в консоль
   const int = 4 
-  const isNegative = int = int < 0
+  const isNegative = int => int < 0
   console.log(isNegative(int))
