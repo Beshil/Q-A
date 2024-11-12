@@ -1,4 +1,372 @@
-1.Дано число. Проверьте, отрицательное оно или нет. Выведите об этом информацию в консоль
-  const int = 4 
-  const isNegative = int => int < 0
-  console.log(isNegative(int))
+1. Пользователь вводит строку, проверьте является ли она числом, если да, то выведите в ответ это число, иначе сообщите об ошибке.
+Решение:
+  const userInput = prompt("Введите строку:");
+
+  if (!isNaN(userInput) && userInput.trim() !== "") {
+      const number = parseFloat(userInput);
+      console.log(`Вы ввели число: ${number}`);
+  } else {
+      console.log("Ошибка: введенная строка не является числом.");
+  }
+2. У вас есть массив:
+  type
+    myArr = array[1..8] of integer; 
+  var
+    a: myArr;
+-- целочисленный тип из 8 элементов.
+
+Пользователь вводит любые целые числа (после каждого нажимает Enter), до тех пор пока не введет символ решетки #
+
+Задача: сохранить в массив целые числа, которые ввел пользователь (до символа # или до окончания места в массиве) и вывести их на экран, значения не используемых ячеек массива выводиться не должны.
+const myArr = new Array(8); // Создаем массив на 8 элементов
+let i = 0; // Индекс для заполнения массива
+Решение: 
+  console.log("Введите целые числа (введите '#' для завершения):");
+
+  while (i < 8) {
+      const input = prompt("Введите число:"); // Чтение строки ввода
+
+      if (input === '#') {
+          break; // Выход из цикла, если введен символ '#'
+      }
+
+      const number = parseInt(input, 10); // Преобразование строки в целое число
+
+      if (!isNaN(number)) { // Проверка, является ли введенное значение числом
+          myArr[i] = number; // Сохраняем число в массив
+          i++; // Увеличиваем индекс для следующего элемента массива
+      } else {
+          console.log("Ошибка: введено не целое число. Попробуйте снова.");
+      }
+  }
+
+  // Выводим введенные числа
+  console.log("Введенные числа:");
+  for (let j = 0; j < i; j++) {
+      console.log(myArr[j]); // Выводим только заполненные элементы массива
+  }
+3. Есть строка, в которой, среди прочих символов содержатся 3 числа, выделите эти в массив.
+Проверьте работу программы на строках:
+  123fdgF34sdf45g
+  123fdgF34sdfg45
+  fdg123F34sdfg45
+
+Решение: 
+  function extractNumbers(inputString) {
+      // Используем регулярное выражение для поиска всех чисел в строке
+      const numbers = inputString.match(/\d+/g);
+      
+      // Если числа найдены, преобразуем их в массив целых чисел
+      return numbers ? numbers.map(Number) : [];
+  }
+4. Пользователь вводит строку произвольных символов, посчитайте количество цифр в ней, численное значение которых больше либо равно 5.
+Решение:
+   function countDigitsGreaterThanOrEqualToFive(inputString) {
+      let count = 0; // Счетчик для цифр >= 5
+  
+      // Проходим по каждому символу в строке
+      for (let char of inputString) {
+          // Проверяем, является ли символ цифрой и >= 5
+          if (char >= '5' && char <= '9') {
+              count++; // Увеличиваем счетчик
+          }
+      }
+  
+      return count; // Возвращаем общее количество цифр >= 5
+  }
+
+5. Пользователь вводит произвольную строку, посчитайте количество чисел в ней - тех, что больше 125.
+Например, в строке:
+  123ret34#2145esrt5
+такое число только одно и это:
+  2145
+(сначала выделите эти числа из строки и запишите их в массив (of integer), а затем уже посчитайте число тех, что больше 125)
+Решение: 
+  function extractNumbers(inputString) {
+      // Используем регулярное выражение для поиска всех чисел в строке
+      const numbers = inputString.match(/\d+/g);
+      
+      // Если числа найдены, преобразуем их в массив целых чисел
+      return numbers ? numbers.map(Number) : [];
+  }
+  
+  function countNumbersGreaterThan125(numbers) {
+      // Считаем количество чисел больше 125
+      return numbers.filter(num => num > 125).length;
+
+6. Пользователь вводит в консоль строку вида:
+    Имя         123
+-- т.е. слева имя и через произвольное количество пробелов число баллов. Разберите эту строку получив имя пользователя как значение в переменной типа string и число баллов в перееменной типа integer;
+Решение: 
+  function parseInput(inputString) {
+      // Используем регулярное выражение для извлечения имени и числа
+      const regex = /(\S+)\s+(\d+)/; // \S+ - имя (непробельные символы), \s+ - пробелы, \d+ - число
+      const match = inputString.match(regex);
+  
+      if (match) {
+          const name = match[1]; // Имя пользователя
+          const score = parseInt(match[2], 10); // Число баллов, преобразуем в целое число
+          return { name, score }; // Возвращаем объект с именем и баллами
+      } else {
+          return null; // Если строка не соответствует формату
+      }
+  }
+7. Пользователь вводит в консоль строки вида (имя + произвольное число пробелов + балл):
+  Вася         485
+  Коля       555
+  Юра        61
+  ..........
+  ....
+  end // признак завершения ввода
+(пока не введёт строку end) -- где слева указаны имена участников, а справа -- число баллов.
+Используя массив строк и массив целых чисел (пусть оба массива будут максимальной длины =3) считайте отдельно имена и баллы и определите победителя, выведя его имя и полученный им балл.
+Решение:
+  // Максимальная длина массивов
+  const MAX_LENGTH = 3;
+  
+  // Массивы для имен и баллов
+  const names = [];
+  const scores = [];
+  
+  // Функция для разбора строки
+  function parseInput(inputString) {
+      const regex = /(\S+)\s+(\d+)/; // Регулярное выражение для извлечения имени и балла
+      const match = inputString.match(regex);
+  
+      if (match) {
+          const name = match[1]; // Имя пользователя
+          const score = parseInt(match[2], 10); // Число баллов
+          return { name, score }; // Возвращаем объект с именем и баллом
+      } else {
+          return null; // Если строка не соответствует формату
+      }
+  }
+  
+  // Чтение строк от пользователя
+  while (names.length < MAX_LENGTH) {
+      const userInput = prompt("Введите строку в формате 'Имя         Балл' (или 'end' для завершения):");
+  
+      if (userInput.toLowerCase() === 'end') {
+          break; // Завершение ввода
+      }
+  
+      const result = parseInput(userInput);
+  
+      if (result) {
+          names.push(result.name); // Добавляем имя в массив
+          scores.push(result.score); // Добавляем балл в массив
+      } else {
+          console.log("Ошибка: строка не соответствует ожидаемому формату.");
+      }
+  }
+  
+  // Определение победителя
+  if (scores.length > 0) {
+      let maxScoreIndex = 0;
+  
+      for (let i = 1; i < scores.length; i++) {
+          if (scores[i] > scores[maxScoreIndex]) {
+              maxScoreIndex = i; // Находим индекс максимального балла
+          }
+      }
+  
+      console.log(`Победитель: ${names[maxScoreIndex]} с баллом ${scores[maxScoreIndex]}`);
+  } else {
+      console.log("Не было введено ни одного балла.");
+  }
+
+
+9. На вход вашей программы подается строка вида:
+  <целоечисло><произвольное число пробелов> <арифм.операция> <произвольное число пробелов> <целоечисло>
+например:
+  1 +  3
+или
+  2 - 12
+Напишите программу, которая разбирает вычисляет результат этого приложения (сделайте поддержку операций сложения и вычитания).
+
+Решение:
+  function calculateExpression(inputString) {
+      // Регулярное выражение для извлечения чисел и операции
+      const regex = /(-?\d+)\s*([\+\-])\s*(-?\d+)/;
+      const match = inputString.match(regex);
+  
+      if (match) {
+          const num1 = parseInt(match[1], 10); // Первое число
+          const operator = match[2]; // Арифметическая операция
+          const num2 = parseInt(match[3], 10); // Второе число
+  
+          let result;
+  
+          // Выполнение операции в зависимости от знака
+          if (operator === '+') {
+              result = num1 + num2;
+          } else if (operator === '-') {
+              result = num1 - num2;
+          } else {
+              return "Ошибка: неподдерживаемая операция.";
+          }
+  
+          return result; // Возвращаем результат
+      } else {
+          return "Ошибка: строка не соответствует ожидаемому формату.";
+      }
+  }
+
+10. На вход вашей программы подается строка вида:
+  5 + 6 -34 + 56  - 7 + 2
+("сколько угодно" чисел с операциями суммы и разности в любом порядке). Вычислите результат (пробелов между символом операции и числом может и не быть)
+Решение:  
+  function calculateExpression(inputString) {
+      // Удаляем лишние пробелы и заменяем все пробелы между числами и операциями
+      const cleanedInput = inputString.replace(/\s+/g, ' ').trim();
+      
+      // Регулярное выражение для разбора выражения
+      const regex = /(-?\d+)\s*([\+\-])?\s*/g;
+      let result = 0;
+      let currentNumber = 0;
+      let currentOperator = '+'; // Начинаем с оператора сложения
+  
+      // Используем регулярное выражение для извлечения чисел и операций
+      let match;
+      while ((match = regex.exec(cleanedInput)) !== null) {
+          currentNumber = parseInt(match[1], 10); // Извлекаем текущее число
+          if (match[2]) {
+              currentOperator = match[2]; // Извлекаем текущий оператор
+          }
+          
+          // Выполняем операцию
+          if (currentOperator === '+') {
+              result += currentNumber;
+          } else if (currentOperator === '-') {
+              result -= currentNumber;
+          }
+      }
+  
+      return result; // Возвращаем итоговый результат
+  }
+11. Задана последовательность символов, имеющая следующий вид: p1q1p2q2p3...qn–1pn, где pi — число, а qi — знак арифметического действия из набора {+, –, *}. Вычислите значение выражения, предполагая, что действия выполняются согласно правилам арифметики.
+Входные данные: На вход программе подается строка указанного вида, состоящая не более чем из 9 чисел, разделенных символами арифметических операций. Выходные данные: Выведите значение арифметического выражения.
+Примеры:
+  Входные данные   Результат 
+   
+  5+2               7
+  1-2*5+2          -7
+  5*6+7-3*2+11      42
+  5*6+7-3*2*3+11    30
+Решение: 
+   function evaluateExpression(expression) {
+      // Сначала будем обрабатывать умножение и деление
+      const numbers = [];
+      const operations = [];
+      let i = 0;
+      const n = expression.length;
+  
+      // Проходим по всей строке
+      while (i < n) {
+          // Читаем число
+          let num = 0;
+          while (i < n && !isNaN(expression[i]) && expression[i] !== ' ') {
+              num = num * 10 + parseInt(expression[i]);
+              i++;
+          }
+          numbers.push(num);
+  
+          // Читаем операцию, если она есть
+          if (i < n) {
+              operations.push(expression[i]);
+              i++;
+          }
+      }
+  
+      // Сначала обрабатываем умножение и деление
+      const resultNumbers = [];
+      const resultOperations = [];
+      resultNumbers.push(numbers[0]);
+  
+      for (let j = 0; j < operations.length; j++) {
+          if (operations[j] === '*') {
+              resultNumbers[resultNumbers.length - 1] *= numbers[j + 1];
+          } else if (operations[j] === '/') {
+              resultNumbers[resultNumbers.length - 1] = Math.floor(resultNumbers[resultNumbers.length - 1] / numbers[j + 1]); // Целочисленное деление
+          } else {
+              resultNumbers.push(numbers[j + 1]);
+              resultOperations.push(operations[j]);
+          }
+      }
+  
+      // Теперь обрабатываем сложение и вычитание
+      let result = resultNumbers[0];
+      for (let k = 0; k < resultOperations.length; k++) {
+          if (resultOperations[k] === '+') {
+              result += resultNumbers[k + 1];
+          } else if (resultOperations[k] === '-') {
+              result -= resultNumbers[k + 1];
+          }
+      }
+  
+      return result;
+  }
+
+
+
+12. Задана последовательность символов, имеющая следующий вид: p1q1p2q2p3...qn–1pn
+ , где pi
+ — число, а qi
+ — знак арифметического действия из набора {+, –, *}. Вычислите значение выражения, предполагая, что действия выполняются согласно правилам арифметики.
+Входные данные: На вход программе подается строка указанного вида, состоящая не более чем из 9 чисел, разделенных символами арифметических операций.
+Выходные данные: Выведите значение арифметического выражения.
+Примеры:
+  Входные данные   Результат 
+   
+  5+2               7
+  1-2*5+2          -7
+  5*6+7-3*2+11      42
+  5*6+7-3*2*3+11    30
+Как решать: Посчитайте результат за одно прочтение строки, без использования массивов.
+Решение: 
+  function calculateExpression(inputString) {
+      // Удаляем пробелы из строки
+      const cleanedInput = inputString.replace(/\s+/g, '');
+  
+      let result = 0; // Итоговый результат
+      let currentNumber = 0; // Текущее число
+      let currentOperator = '+'; // Начинаем с оператора сложения
+  
+      for (let i = 0; i < cleanedInput.length; i++) {
+          const char = cleanedInput[i];
+  
+          if (/\d/.test(char)) {
+              // Если символ - цифра, формируем текущее число
+              currentNumber = currentNumber * 10 + parseInt(char, 10);
+          }
+  
+          // Если символ - оператор или последний символ в строке
+          if (char === '+' || char === '-' || char === '*' || i === cleanedInput.length - 1) {
+              // Если это последний символ и он не оператор, нужно обработать текущее число
+              if (i === cleanedInput.length - 1 && /\d/.test(char)) {
+                  // Обрабатываем последнее число
+                  currentNumber = currentNumber * 10 + parseInt(char, 10);
+              }
+  
+              // Выполняем операцию с предыдущим результатом
+              switch (currentOperator) {
+                  case '+':
+                      result += currentNumber;
+                      break;
+                  case '-':
+                      result -= currentNumber;
+                      break;
+                  case '*':
+                      result *= currentNumber;
+                      break;
+              }
+  
+              // Обновляем текущий оператор и сбрасываем текущее число
+              currentOperator = char;
+              currentNumber = 0; // Сбрасываем текущее число
+          }
+      }
+  
+      return result; // Возвращаем итоговый результат
+  }
+ 
